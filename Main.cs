@@ -53,7 +53,7 @@ public class UnrealCS2Plugin : BasePlugin
     }
 }
 
-public class Knife
+public abstract class Knife
 {
     public static void Change(CBasePlayerWeapon weapon)
     {
@@ -68,7 +68,7 @@ public class Knife
     }
 }
 
-public class Subclass
+public abstract class Subclass
 {
     public static void Change(CBasePlayerWeapon weapon, ushort itemD)
     {
