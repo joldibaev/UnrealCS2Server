@@ -961,11 +961,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nurlan\\Desktop\\Dev\\UnrealCS2Server\\UnrealCS2.csproj",
+      "projectUniqueName": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj",
       "projectName": "UnrealCS2",
-      "projectPath": "C:\\Users\\Nurlan\\Desktop\\Dev\\UnrealCS2Server\\UnrealCS2.csproj",
+      "projectPath": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj",
       "packagesPath": "C:\\Users\\Nurlan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nurlan\\Desktop\\Dev\\UnrealCS2Server\\obj\\",
+      "outputPath": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\obj\\",
       "projectStyle": "PackageReference",
       "UsingMicrosoftNETSdk": false,
       "configFilePaths": [

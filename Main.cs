@@ -7,18 +7,20 @@ using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace UnrealCS2;
 
 [MinimumApiVersion(80)]
 public class UnrealCS2Plugin : BasePlugin
 {
+    public static readonly MemoryFunctionVoid<nint, string, float> CAttributeListSetOrAddAttributeValueByName =
+        new(GameData.GetSignature("CAttributeList_SetOrAddAttributeValueByName"));
+
     public override string ModuleName => "Unreal CS2";
     public override string ModuleVersion => "v0.0.1";
     public override string ModuleAuthor => "Joldibaev";
 
+    // Event handler for player spawn
     [GameEventHandler]
     public HookResult OnPlayerSpawn(EventPlayerSpawn @event, GameEventInfo info)
     {
@@ -35,10 +37,7 @@ public class UnrealCS2Plugin : BasePlugin
         return HookResult.Continue;
     }
 
-    private static readonly MemoryFunctionVoid<nint, string, float> CAttributeListSetOrAddAttributeValueByName = new(
-        GameData.GetSignature("CAttributeList_SetOrAddAttributeValueByName")
-    );
-
+    // Method to give a knife to the player
     private void GiveKnife(CCSPlayerController player)
     {
         var playerPawn = player?.PlayerPawn.Get();
@@ -56,7 +55,7 @@ public class UnrealCS2Plugin : BasePlugin
             var knife = weapon.Get();
             if (knife != null)
             {
-                Knife.GiveButterfly(knife, 515);
+                Knife.GiveButterfly(knife);
             }
         }
     }
@@ -64,12 +63,12 @@ public class UnrealCS2Plugin : BasePlugin
 
 public abstract class Knife
 {
-    public static void GiveButterfly(CBasePlayerWeapon weapon, ushort index)
+    public static void GiveButterfly(CBasePlayerWeapon weapon, ushort index = 515)
     {
         if (weapon.AttributeManager.Item.ItemDefinitionIndex != index)
         {
             Subclass.Change(weapon, index);
-            Skin.Change(weapon, 568, 0.001f, 1337);
+            Skin.Change(weapon, 568, 0.001f, 1337); // Butterfly Knife with Case Hardened skin
         }
     }
 }
@@ -93,24 +92,20 @@ public abstract class Skin
 {
     public static void Change(CBasePlayerWeapon weapon, int paintKit, float wear, int seed)
     {
-        MemoryFunctionVoid<nint, string, float> cAttributeListSetOrAddAttributeValueByName = new(
-            GameData.GetSignature("CAttributeList_SetOrAddAttributeValueByName")
-        );
-
         weapon.AttributeManager.Item.NetworkedDynamicAttributes.Attributes.RemoveAll();
-        cAttributeListSetOrAddAttributeValueByName.Invoke(
+        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
             weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture prefab", paintKit);
-        cAttributeListSetOrAddAttributeValueByName.Invoke(
+        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
             weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture seed", seed);
-        cAttributeListSetOrAddAttributeValueByName.Invoke(
+        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
             weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture wear", wear);
 
         weapon.AttributeManager.Item.AttributeList.Attributes.RemoveAll();
-        cAttributeListSetOrAddAttributeValueByName.Invoke(weapon.AttributeManager.Item.AttributeList.Handle,
-            "set item texture prefab", paintKit);
-        cAttributeListSetOrAddAttributeValueByName.Invoke(weapon.AttributeManager.Item.AttributeList.Handle,
-            "set item texture seed", seed);
-        cAttributeListSetOrAddAttributeValueByName.Invoke(weapon.AttributeManager.Item.AttributeList.Handle,
-            "set item texture wear", wear);
+        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
+            weapon.AttributeManager.Item.AttributeList.Handle, "set item texture prefab", paintKit);
+        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
+            weapon.AttributeManager.Item.AttributeList.Handle, "set item texture seed", seed);
+        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
+            weapon.AttributeManager.Item.AttributeList.Handle, "set item texture wear", wear);
     }
 }

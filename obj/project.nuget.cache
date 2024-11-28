@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zguUvICEUEg=",
+  "dgSpecHash": "unQt5jqzPfM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Nurlan\\Desktop\\Dev\\UnrealCS2Server\\UnrealCS2.csproj",
+  "projectFilePath": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nurlan\\.nuget\\packages\\microsoft.extensions.configuration\\9.0.0\\microsoft.extensions.configuration.9.0.0.nupkg.sha512",
     "C:\\Users\\Nurlan\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.0\\microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512",
