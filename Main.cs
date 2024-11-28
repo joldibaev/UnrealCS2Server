@@ -1,9 +1,14 @@
-﻿using CounterStrikeSharp.API;
+﻿using System.Runtime.InteropServices;
+using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Memory;
+using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
+using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace UnrealCS2;
 
@@ -30,7 +35,11 @@ public class UnrealCS2Plugin : BasePlugin
         return HookResult.Continue;
     }
 
-    private static void GiveKnife(CCSPlayerController player)
+    private static readonly MemoryFunctionVoid<nint, string, float> CAttributeListSetOrAddAttributeValueByName = new(
+        GameData.GetSignature("CAttributeList_SetOrAddAttributeValueByName")
+    );
+
+    private void GiveKnife(CCSPlayerController player)
     {
         var playerPawn = player?.PlayerPawn.Get();
         var weaponService = playerPawn?.WeaponServices;
@@ -43,11 +52,11 @@ public class UnrealCS2Plugin : BasePlugin
             if (vData == null) continue;
 
             if (vData.WeaponType != CSWeaponType.WEAPONTYPE_KNIFE) continue;
-            
+
             var knife = weapon.Get();
             if (knife != null)
             {
-                Knife.Change(knife);
+                Knife.GiveButterfly(knife, 515);
             }
         }
     }
@@ -55,27 +64,53 @@ public class UnrealCS2Plugin : BasePlugin
 
 public abstract class Knife
 {
-    public static void Change(CBasePlayerWeapon weapon)
+    public static void GiveButterfly(CBasePlayerWeapon weapon, ushort index)
     {
-        const ushort newDefIndex = 515;
-
-        if (weapon.AttributeManager.Item.ItemDefinitionIndex != newDefIndex)
+        if (weapon.AttributeManager.Item.ItemDefinitionIndex != index)
         {
-            Subclass.Change(weapon, newDefIndex);
-            weapon.AttributeManager.Item.ItemDefinitionIndex = newDefIndex;
-            // weapon.AttributeManager.Item.EntityQuality = 3;
+            Subclass.Change(weapon, index);
+            Skin.Change(weapon, 568, 0.001f, 1337);
         }
     }
 }
 
 public abstract class Subclass
 {
-    public static void Change(CBasePlayerWeapon weapon, ushort itemD)
+    public static void Change(CBasePlayerWeapon weapon, ushort index)
     {
         var subclassChangeFunc = VirtualFunction.Create<nint, string, int>(
             GameData.GetSignature("ChangeSubclass")
         );
 
-        subclassChangeFunc(weapon.Handle, itemD.ToString());
+        subclassChangeFunc(weapon.Handle, index.ToString());
+
+        weapon.AttributeManager.Item.ItemDefinitionIndex = index;
+        // weapon.AttributeManager.Item.EntityQuality = 3;
+    }
+}
+
+public abstract class Skin
+{
+    public static void Change(CBasePlayerWeapon weapon, int paintKit, float wear, int seed)
+    {
+        MemoryFunctionVoid<nint, string, float> cAttributeListSetOrAddAttributeValueByName = new(
+            GameData.GetSignature("CAttributeList_SetOrAddAttributeValueByName")
+        );
+
+        weapon.AttributeManager.Item.NetworkedDynamicAttributes.Attributes.RemoveAll();
+        cAttributeListSetOrAddAttributeValueByName.Invoke(
+            weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture prefab", paintKit);
+        cAttributeListSetOrAddAttributeValueByName.Invoke(
+            weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture seed", seed);
+        cAttributeListSetOrAddAttributeValueByName.Invoke(
+            weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture wear", wear);
+
+        weapon.AttributeManager.Item.AttributeList.Attributes.RemoveAll();
+        cAttributeListSetOrAddAttributeValueByName.Invoke(weapon.AttributeManager.Item.AttributeList.Handle,
+            "set item texture prefab", paintKit);
+        cAttributeListSetOrAddAttributeValueByName.Invoke(weapon.AttributeManager.Item.AttributeList.Handle,
+            "set item texture seed", seed);
+        cAttributeListSetOrAddAttributeValueByName.Invoke(weapon.AttributeManager.Item.AttributeList.Handle,
+            "set item texture wear", wear);
     }
 }
