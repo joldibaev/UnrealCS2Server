@@ -44,10 +44,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "CounterStrikeSharp.API": {
-              "target": "Package",
-              "version": "[1.0.291, )"
-            },
             "Microsoft.Extensions.Logging": {
               "target": "Package",
               "version": "[9.0.0, )"

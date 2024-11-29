@@ -11,11 +11,8 @@ using Microsoft.Extensions.Logging;
 namespace UnrealCS2;
 
 [MinimumApiVersion(80)]
-public class UnrealCS2Plugin : BasePlugin
+public partial class UnrealCS2 : BasePlugin
 {
-    public static readonly MemoryFunctionVoid<nint, string, float> CAttributeListSetOrAddAttributeValueByName =
-        new(GameData.GetSignature("CAttributeList_SetOrAddAttributeValueByName"));
-
     public override string ModuleName => "Unreal CS2";
     public override string ModuleVersion => "v0.0.1";
     public override string ModuleAuthor => "Joldibaev";
@@ -57,42 +54,5 @@ public class UnrealCS2Plugin : BasePlugin
                 Weapon.ChangePaint(knife, 568, 0.001f, 1337);
             }
         }
-    }
-}
-
-public abstract class Weapon
-{
-    public static void ChangeSubclass(CBasePlayerWeapon weapon, ushort index)
-    {
-        if (weapon.AttributeManager.Item.ItemDefinitionIndex != index)
-        {
-            var subclassChangeFunc = VirtualFunction.Create<nint, string, int>(
-                GameData.GetSignature("ChangeSubclass")
-            );
-
-            subclassChangeFunc(weapon.Handle, index.ToString());
-
-            weapon.AttributeManager.Item.ItemDefinitionIndex = index;
-            // weapon.AttributeManager.Item.EntityQuality = 3;
-        }
-    }
-
-    public static void ChangePaint(CBasePlayerWeapon weapon, int paintKit, float wear, int seed)
-    {
-        weapon.AttributeManager.Item.NetworkedDynamicAttributes.Attributes.RemoveAll();
-        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
-            weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture prefab", paintKit);
-        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
-            weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture seed", seed);
-        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
-            weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture wear", wear);
-
-        weapon.AttributeManager.Item.AttributeList.Attributes.RemoveAll();
-        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
-            weapon.AttributeManager.Item.AttributeList.Handle, "set item texture prefab", paintKit);
-        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
-            weapon.AttributeManager.Item.AttributeList.Handle, "set item texture seed", seed);
-        UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
-            weapon.AttributeManager.Item.AttributeList.Handle, "set item texture wear", wear);
     }
 }
