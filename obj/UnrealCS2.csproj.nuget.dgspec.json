@@ -1,21 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj": {}
+    "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/UnrealCS2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj": {
+    "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/UnrealCS2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj",
+        "projectUniqueName": "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/UnrealCS2.csproj",
         "projectName": "UnrealCS2",
-        "projectPath": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj",
-        "packagesPath": "C:\\Users\\Nurlan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\obj\\",
+        "projectPath": "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/UnrealCS2.csproj",
+        "packagesPath": "/Users/nurlanjoldibaev/.nuget/packages/",
+        "outputPath": "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/obj/",
         "projectStyle": "PackageReference",
         "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
-          "C:\\Users\\Nurlan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/nurlanjoldibaev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -44,6 +44,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "CounterStrikeSharp.API": {
+              "target": "Package",
+              "version": "[1.0.291, )"
+            },
             "Microsoft.Extensions.Logging": {
               "target": "Package",
               "version": "[9.0.0, )"
@@ -73,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

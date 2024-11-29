@@ -20,7 +20,6 @@ public class UnrealCS2Plugin : BasePlugin
     public override string ModuleVersion => "v0.0.1";
     public override string ModuleAuthor => "Joldibaev";
 
-    // Event handler for player spawn
     [GameEventHandler]
     public HookResult OnPlayerSpawn(EventPlayerSpawn @event, GameEventInfo info)
     {
@@ -30,15 +29,14 @@ public class UnrealCS2Plugin : BasePlugin
         {
             if (player != null)
             {
-                GiveKnife(player);
+                UpdateKnife(player);
             }
         });
 
         return HookResult.Continue;
     }
 
-    // Method to give a knife to the player
-    private void GiveKnife(CCSPlayerController player)
+    private void UpdateKnife(CCSPlayerController player)
     {
         var playerPawn = player?.PlayerPawn.Get();
         var weaponService = playerPawn?.WeaponServices;
@@ -55,42 +53,31 @@ public class UnrealCS2Plugin : BasePlugin
             var knife = weapon.Get();
             if (knife != null)
             {
-                Knife.GiveButterfly(knife);
+                Weapon.ChangeSubclass(knife, 515);
+                Weapon.ChangePaint(knife, 568, 0.001f, 1337);
             }
         }
     }
 }
 
-public abstract class Knife
+public abstract class Weapon
 {
-    public static void GiveButterfly(CBasePlayerWeapon weapon, ushort index = 515)
+    public static void ChangeSubclass(CBasePlayerWeapon weapon, ushort index)
     {
         if (weapon.AttributeManager.Item.ItemDefinitionIndex != index)
         {
-            Subclass.Change(weapon, index);
-            Skin.Change(weapon, 568, 0.001f, 1337); // Butterfly Knife with Case Hardened skin
+            var subclassChangeFunc = VirtualFunction.Create<nint, string, int>(
+                GameData.GetSignature("ChangeSubclass")
+            );
+
+            subclassChangeFunc(weapon.Handle, index.ToString());
+
+            weapon.AttributeManager.Item.ItemDefinitionIndex = index;
+            // weapon.AttributeManager.Item.EntityQuality = 3;
         }
     }
-}
 
-public abstract class Subclass
-{
-    public static void Change(CBasePlayerWeapon weapon, ushort index)
-    {
-        var subclassChangeFunc = VirtualFunction.Create<nint, string, int>(
-            GameData.GetSignature("ChangeSubclass")
-        );
-
-        subclassChangeFunc(weapon.Handle, index.ToString());
-
-        weapon.AttributeManager.Item.ItemDefinitionIndex = index;
-        // weapon.AttributeManager.Item.EntityQuality = 3;
-    }
-}
-
-public abstract class Skin
-{
-    public static void Change(CBasePlayerWeapon weapon, int paintKit, float wear, int seed)
+    public static void ChangePaint(CBasePlayerWeapon weapon, int paintKit, float wear, int seed)
     {
         weapon.AttributeManager.Item.NetworkedDynamicAttributes.Attributes.RemoveAll();
         UnrealCS2Plugin.CAttributeListSetOrAddAttributeValueByName.Invoke(
