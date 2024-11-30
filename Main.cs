@@ -5,6 +5,7 @@ using CounterStrikeSharp.API.Core.Attributes;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
+using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -24,35 +25,12 @@ public partial class UnrealCS2 : BasePlugin
 
         Server.NextFrame(() =>
         {
-            if (player != null)
-            {
-                UpdateKnife(player);
-            }
+            if (player == null) return;
+
+            Knife.Change(player, 515, 568, 0.001f, 1);
+            Gloves.Change(player, 5033, 10026, 0.001f, 1);
         });
 
         return HookResult.Continue;
-    }
-
-    private void UpdateKnife(CCSPlayerController player)
-    {
-        var playerPawn = player?.PlayerPawn.Get();
-        var weaponService = playerPawn?.WeaponServices;
-
-        if (playerPawn == null || weaponService == null) return;
-
-        foreach (var weapon in weaponService.MyWeapons)
-        {
-            var vData = weapon.Get()?.As<CCSWeaponBase>().VData;
-            if (vData == null) continue;
-
-            if (vData.WeaponType != CSWeaponType.WEAPONTYPE_KNIFE) continue;
-
-            var knife = weapon.Get();
-            if (knife != null)
-            {
-                Weapon.ChangeSubclass(knife, 515);
-                Weapon.ChangePaint(knife, 568, 0.001f, 1337);
-            }
-        }
     }
 }

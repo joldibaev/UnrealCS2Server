@@ -956,20 +956,20 @@
     ]
   },
   "packageFolders": {
-    "/Users/nurlanjoldibaev/.nuget/packages/": {}
+    "C:\\Users\\Nurlan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/UnrealCS2.csproj",
+      "projectUniqueName": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj",
       "projectName": "UnrealCS2",
-      "projectPath": "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/UnrealCS2.csproj",
-      "packagesPath": "/Users/nurlanjoldibaev/.nuget/packages/",
-      "outputPath": "/Users/nurlanjoldibaev/Desktop/Steam Dev/UnrealCS2/obj/",
+      "projectPath": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\UnrealCS2.csproj",
+      "packagesPath": "C:\\Users\\Nurlan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Nurlan\\Desktop\\CS2Server\\UnrealCS2Server\\obj\\",
       "projectStyle": "PackageReference",
       "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
-        "/Users/nurlanjoldibaev/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Nurlan\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1027,7 +1027,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
