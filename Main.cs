@@ -29,6 +29,7 @@ public partial class UnrealCS2 : BasePlugin
 
             Knife.Change(player, 515, 568, 0.001f, 1);
             Gloves.Change(player, 5033, 10026, 0.001f, 1);
+            Gloves.Change(player, 5033, 10026, 0.001f, 1);
         });
 
         return HookResult.Continue;

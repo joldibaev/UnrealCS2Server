@@ -89,9 +89,13 @@ public abstract class Gloves : Skin
             CEconItemView item = pawn.EconGloves;
 
             item.ItemDefinitionIndex = index;
+            item.ItemIDLow = 16384 & 0xFFFFFFFF;
+            item.ItemIDHigh = 16384;
 
             UpdateAttributes(item.NetworkedDynamicAttributes, paintKit, seed, wear);
             UpdateAttributes(item.AttributeList, paintKit, seed, wear);
+
+            item.Initialized = true;
 
             SetBodyGroupFunc.Invoke(pawn.Handle, "default_gloves", 1);
         });
